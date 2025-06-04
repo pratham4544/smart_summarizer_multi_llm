@@ -16,6 +16,7 @@ from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 from evaluate import load as load_metric
 import pandas as pd
+from langchain_community.vectorstores import FAISS
 
 # --- CSS Styling ---
 st.markdown("""
@@ -144,7 +145,7 @@ if uploaded_file is not None:
             text_splitter = CharacterTextSplitter(chunk_size=3000, chunk_overlap=300)
             documents = text_splitter.split_documents(raw_documents)
 
-            db = Chroma.from_documents(documents, embeddings)
+            db = FAISS.from_documents(documents, embeddings)
             retriever = db.as_retriever()
             query = "Can you summarise the whole document for me?"
             input_docs = retriever.invoke(query)
